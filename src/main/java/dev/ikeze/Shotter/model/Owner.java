@@ -15,8 +15,7 @@ public class Owner {
   private String name;
   private String password;
 
-  public Owner(long Id, String email, String name, String password) {
-    this.Id = Id;
+  public Owner(String name, String email, String password) {
     this.email = email;
     this.name = name;
     this.password = password;

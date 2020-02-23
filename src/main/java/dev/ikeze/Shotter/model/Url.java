@@ -14,8 +14,7 @@ public class Url {
 
   private String directory;
 
-  public Url(long Id, String directory) {
-    this.Id = Id;
+  public Url(String directory) {
     this.directory = directory;
   }
 
