@@ -1,19 +1,30 @@
 package dev.ikeze.Shotter.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Owner {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long Id;
+  private long ownerid;
 
   private String email;
   private String name;
   private String password;
+
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+  @JsonIgnoreProperties("owner")
+  private List<Url> urls = new ArrayList<>();
 
   public Owner(String name, String email, String password) {
     this.email = email;
@@ -24,12 +35,20 @@ public class Owner {
   public Owner() {
   }
 
-  public void setId(long Id) {
-    this.Id = Id;
+  public List<Url> getUrls() {
+    return urls;
   }
 
-  public long getId() {
-    return Id;
+  public void setUrls(List<Url> urls) {
+    this.urls = urls;
+  }
+
+  public void setOwnerid(long ownerid) {
+    this.ownerid = ownerid;
+  }
+
+  public long getOwnerid() {
+    return ownerid;
   }
 
   public void setEmail(String email) {
@@ -58,6 +77,6 @@ public class Owner {
 
   @Override
   public String toString() {
-    return String.format("Id: %d, name: %s, email: %s, password: %s", Id, name, email, password);
+    return String.format("Id: %d, name: %s, email: %s, password: %s", ownerid, name, email, password);
   }
 }

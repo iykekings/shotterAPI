@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.ikeze.Shotter.model.Owner;
 import dev.ikeze.Shotter.repos.OwnerRepository;
 
-@RequestMapping("owner")
+@RequestMapping("owners")
 @RestController
 public class OwnerController {
   final OwnerRepository ownerRepository;

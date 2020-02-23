@@ -4,6 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Url {
@@ -14,11 +18,25 @@ public class Url {
 
   private String directory;
 
-  public Url(String directory) {
+  @ManyToOne
+  @JoinColumn(name = "ownerid", nullable = false)
+  @JsonIgnoreProperties("urls")
+  private Owner owner;
+
+  public Url(String directory, Owner owner) {
     this.directory = directory;
+    this.owner = owner;
   }
 
   public Url() {
+  }
+
+  public Owner getOwner() {
+    return this.owner;
+  }
+
+  public void setOwner(Owner owner) {
+    this.owner = owner;
   }
 
   public String getDirectory() {

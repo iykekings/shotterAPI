@@ -10,7 +10,7 @@ import dev.ikeze.Shotter.model.Url;
 import dev.ikeze.Shotter.repos.UrlRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@RequestMapping("url")
+@RequestMapping("urls")
 @RestController
 public class UrlController {
   private UrlRepository urlRepository;
