@@ -4,11 +4,11 @@ import org.springframework.http.HttpStatus;
 
 public class ApiError {
   private String message;
-  private HttpStatus httpStatus;
+  private HttpStatus status;
 
-  public ApiError(String message, HttpStatus httpStatus) {
+  public ApiError(String message, HttpStatus status) {
     this.message = message;
-    this.httpStatus = httpStatus;
+    this.status = status;
   }
 
   public String getMessage() {
@@ -16,6 +16,6 @@ public class ApiError {
   }
 
   public HttpStatus getHttpStatus() {
-    return httpStatus;
+    return status;
   }
 }

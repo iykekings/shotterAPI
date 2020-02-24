@@ -10,4 +10,6 @@ import dev.ikeze.Shotter.model.Url;
 @Repository
 public interface UrlRepository extends CrudRepository<Url, Long> {
   public List<Url> findByOwnerOwnerid(long ownerid);
+
+  public Url findByDirectory(String directory);
 }
