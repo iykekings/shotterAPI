@@ -1,4 +1,4 @@
-package dev.ikeze.Shotter.utils;
+package dev.ikeze.Shotter.error;
 
 import org.springframework.http.HttpStatus;
 
