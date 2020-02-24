@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.ikeze.Shotter.model.Owner;
 import dev.ikeze.Shotter.repos.OwnerRepository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("owners")
 @RestController
@@ -24,5 +25,9 @@ public class OwnerController {
   public List<Owner> getAllOwners() {
     return (List<Owner>) ownerRepository.findAll();
   }
+  // @GetMapping(value="{ownerid}")
+  // public SomeData getMethodName(@RequestParam String param) {
+  // return new SomeData();
+  // }
 
 }

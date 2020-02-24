@@ -7,4 +7,5 @@ import dev.ikeze.Shotter.model.Owner;
 
 @Repository
 public interface OwnerRepository extends CrudRepository<Owner, Long> {
+  // public List<Url> find
 }

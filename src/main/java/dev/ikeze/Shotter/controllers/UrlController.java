@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.ikeze.Shotter.model.Url;
 import dev.ikeze.Shotter.repos.UrlRepository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RequestMapping("urls")
 @RestController
@@ -24,4 +25,10 @@ public class UrlController {
   public List<Url> getUrls() {
     return (List<Url>) urlRepository.findAll();
   }
+
+  @GetMapping(value = "owner/{ownerid}")
+  public List<Url> getAllUrlsByOwner(@PathVariable("ownerid") long ownerid) {
+    return urlRepository.findByOwnerOwnerid(ownerid);
+  }
+
 }
