@@ -1,10 +1,6 @@
 package dev.ikeze.Shotter.services;
 
 import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +22,7 @@ public class UrlService {
   @Transactional
   public Url addUrl(Url url) {
     var urlInDB = urlRepository.findByDirectory(url.getDirectory());
-    if (urlInDB == null) {
+    if (urlInDB.isEmpty()) {
       return urlRepository.save(url);
     }
     throw new UrlDuplicateException(url.getDirectory());

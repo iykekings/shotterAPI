@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -16,15 +17,20 @@ public class Url {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long Id;
 
+  @NotBlank
   private String directory;
+
+  @NotBlank
+  private String redirect;
 
   @ManyToOne
   @JoinColumn(name = "ownerid", nullable = false)
   @JsonIgnoreProperties({ "urls", "password" })
   private Owner owner;
 
-  public Url(String directory, Owner owner) {
+  public Url(String directory, String redirect, Owner owner) {
     this.directory = directory;
+    this.redirect = redirect;
     this.owner = owner;
   }
 
@@ -43,6 +49,10 @@ public class Url {
     return directory;
   }
 
+  public String getRedirect() {
+    return redirect;
+  }
+
   public long getid() {
     return Id;
   }
@@ -53,6 +63,10 @@ public class Url {
 
   public void setDirectory(String directory) {
     this.directory = directory;
+  }
+
+  public void setRedirect(String redirect) {
+    this.redirect = redirect;
   }
 
   @Override
