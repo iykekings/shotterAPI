@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UrlMissingFieldsException extends RuntimeException {
 
   public UrlMissingFieldsException() {
-    super("Please provide directory, redirect and ownerid fields");
+    super("Please provide directory and redirect fields");
   }
 }

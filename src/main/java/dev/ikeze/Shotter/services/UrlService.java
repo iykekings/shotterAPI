@@ -47,4 +47,12 @@ public class UrlService {
   public List<Url> findByOwnerid(long ownerid) {
     return urlRepository.findByOwnerOwnerid(ownerid);
   }
+
+  public void deleteById(long Id) {
+    try {
+      urlRepository.deleteById(Id);
+    } catch (Exception e) {
+      throw new UrlNotFoundException(Long.toString(Id));
+    }
+  }
 }

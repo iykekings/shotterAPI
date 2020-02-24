@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.ikeze.Shotter.model.Url;
 import dev.ikeze.Shotter.services.UrlService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +50,12 @@ public class UrlController {
   @PostMapping
   public Url addUrl(@RequestBody Url url) {
     return urlService.addUrl(url);
+  }
+
+  // DELETE: /urls/Id
+  @DeleteMapping(value = "{Id}")
+  public void delete(@PathVariable("Id") Long Id) {
+    urlService.deleteById(Id);
   }
 
 }

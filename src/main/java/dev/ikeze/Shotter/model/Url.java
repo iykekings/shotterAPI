@@ -21,7 +21,7 @@ public class Url {
   private String redirect;
 
   @ManyToOne
-  @JoinColumn(name = "ownerid")
+  @JoinColumn(name = "ownerid", nullable = false)
   @JsonIgnoreProperties({ "urls", "password" })
   private Owner owner;
 
