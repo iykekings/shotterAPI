@@ -20,7 +20,7 @@ public class Url {
 
   @ManyToOne
   @JoinColumn(name = "ownerid", nullable = false)
-  @JsonIgnoreProperties("urls")
+  @JsonIgnoreProperties({ "urls", "password" })
   private Owner owner;
 
   public Url(String directory, Owner owner) {
