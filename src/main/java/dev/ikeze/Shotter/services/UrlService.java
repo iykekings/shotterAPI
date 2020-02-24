@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dev.ikeze.Shotter.error.UrlDuplicateException;
+import dev.ikeze.Shotter.error.UrlMissingFieldsException;
 import dev.ikeze.Shotter.error.UrlNotFoundException;
 import dev.ikeze.Shotter.model.Url;
 import dev.ikeze.Shotter.repos.UrlRepository;
@@ -21,6 +22,9 @@ public class UrlService {
   // returns Url if successful and null when the Url already exists
   @Transactional
   public Url addUrl(Url url) {
+    if (url.getDirectory().isBlank() || url.getRedirect().isBlank()) {
+      throw new UrlMissingFieldsException();
+    }
     var urlInDB = urlRepository.findByDirectory(url.getDirectory());
     if (urlInDB.isEmpty()) {
       return urlRepository.save(url);

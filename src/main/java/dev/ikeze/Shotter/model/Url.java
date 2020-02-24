@@ -17,14 +17,11 @@ public class Url {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long Id;
 
-  @NotBlank
   private String directory;
-
-  @NotBlank
   private String redirect;
 
   @ManyToOne
-  @JoinColumn(name = "ownerid", nullable = false)
+  @JoinColumn(name = "ownerid")
   @JsonIgnoreProperties({ "urls", "password" })
   private Owner owner;
 
