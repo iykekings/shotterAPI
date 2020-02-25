@@ -22,9 +22,7 @@ public class UrlService {
   // returns Url if successful and null when the Url already exists
   @Transactional
   public Url addUrl(Url url) {
-    if (url.getDirectory().isBlank() || url.getRedirect().isBlank()) {
-      throw new UrlMissingFieldsException();
-    }
+    checkUrl(url);
     var urlInDB = urlRepository.findByDirectory(url.getDirectory());
     if (urlInDB.isEmpty()) {
       return urlRepository.save(url);
@@ -53,6 +51,21 @@ public class UrlService {
       urlRepository.deleteById(Id);
     } catch (Exception e) {
       throw new UrlNotFoundException(Long.toString(Id));
+    }
+  }
+
+  public Url updateById(long Id, Url url) {
+    checkUrl(url);
+    Url urlInDB = findById(Id);
+    urlInDB.setDirectory(url.getDirectory());
+    urlInDB.setRedirect(url.getRedirect());
+    urlInDB.getOwner().setOwnerid(url.getOwner().getOwnerid());
+    return urlRepository.save(urlInDB);
+  }
+
+  private static void checkUrl(Url url) {
+    if (url.getDirectory().isBlank() || url.getRedirect().isBlank() || url.getOwner().getOwnerid() == 0L) {
+      throw new UrlMissingFieldsException();
     }
   }
 }
