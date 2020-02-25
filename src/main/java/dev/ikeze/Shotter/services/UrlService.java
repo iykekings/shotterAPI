@@ -20,6 +20,7 @@ public class UrlService {
   private UrlRepository urlRepository;
 
   // returns Url if successful and null when the Url already exists
+  // TODO: remove Transactional
   @Transactional
   public Url addUrl(Url url) {
     checkUrl(url);
