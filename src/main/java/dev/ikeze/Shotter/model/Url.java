@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -20,8 +19,8 @@ public class Url {
   private String directory;
   private String redirect;
 
-  @ManyToOne
-  @JoinColumn(name = "ownerid", nullable = false)
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "ownerid", updatable = false)
   @JsonIgnoreProperties({ "urls", "password" })
   private Owner owner;
 

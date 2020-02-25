@@ -64,7 +64,7 @@ public class UrlService {
   }
 
   private static void checkUrl(Url url) {
-    if (url.getDirectory().isBlank() || url.getRedirect().isBlank() || url.getOwner().getOwnerid() == 0L) {
+    if (url.getDirectory().isBlank() || url.getRedirect().isBlank()) {
       throw new UrlMissingFieldsException();
     }
   }

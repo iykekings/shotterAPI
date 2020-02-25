@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping(value = "urls")
@@ -52,10 +53,16 @@ public class UrlController {
     return urlService.addUrl(url);
   }
 
-  // DELETE: /urls/Id
+  // DELETE: /Id
   @DeleteMapping(value = "{Id}")
   public void delete(@PathVariable("Id") Long Id) {
     urlService.deleteById(Id);
+  }
+
+  // PUT: /Id
+  @PutMapping(value = "{Id}")
+  public Url update(@PathVariable("Id") long Id, @RequestBody Url url) {
+    return urlService.updateById(Id, url);
   }
 
 }

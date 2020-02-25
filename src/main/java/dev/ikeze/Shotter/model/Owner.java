@@ -31,9 +31,6 @@ public class Owner {
     this.name = name;
     this.password = password;
   }
-  // public Owner(String email) {
-  // this.email = email;
-  // }
 
   public Owner() {
   }
