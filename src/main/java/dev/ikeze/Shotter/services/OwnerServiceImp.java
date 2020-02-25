@@ -18,8 +18,7 @@ public class OwnerServiceImp implements OwnerService {
 
   @Override
   public List<Owner> findAll() {
-    // TODO Auto-generated method stub
-    return null;
+    return (List<Owner>) ownerRepository.findAll();
   }
 
   @Override
