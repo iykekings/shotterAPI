@@ -13,7 +13,7 @@ public interface OwnerService {
 
   Owner create(Owner owner);
 
-  String login(Owner owner);
+  void authenticate(String username, String password) throws Exception;
 
   void delete(long Id);
 }
