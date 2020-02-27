@@ -1,6 +1,7 @@
 package dev.ikeze.Shotter.config;
 /* https://github.com/koushikkothagal/spring-security-jwt/blob/master/src/main/java/io/javabrains/springsecurityjwt/SpringSecurityJwtApplication.java
 https://www.javainuse.com/spring/boot-jwt
+This class extends the WebSecurityConfigurerAdapter is a convenience class that allows customization to both WebSecurity and HttpSecurity.
 */
 
 import org.springframework.beans.factory.annotation.Autowired;
