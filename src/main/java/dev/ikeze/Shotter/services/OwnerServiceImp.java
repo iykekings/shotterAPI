@@ -24,6 +24,8 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
 
   @Autowired
   private OwnerRepository ownerRepository;
+
+  @Autowired
   private AuthenticationManager authenticationManager;
 
   @Override
@@ -70,7 +72,7 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return ownerRepository.findByEmail(username).map(u -> new User(u.getEmail(), u.getPassword(), new ArrayList<>()))
         .orElseGet(() -> {
-          throw new UsernameNotFoundException("User not found with username: " + username);
+          throw new UsernameNotFoundException("User not found with email: " + username);
         });
   }
 
