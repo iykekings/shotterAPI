@@ -12,9 +12,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dev.ikeze.Shotter.error.OwnerMissingFieldsException;
+import dev.ikeze.Shotter.error.OwnerNotFoundException;
 import dev.ikeze.Shotter.model.Owner;
 import dev.ikeze.Shotter.repos.OwnerRepository;
 
@@ -28,6 +31,9 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
   @Autowired
   private AuthenticationManager authenticationManager;
 
+  @Autowired
+  private BCryptPasswordEncoder bCryptPasswordEncoder;
+
   @Override
   public List<Owner> findAll() {
     return (List<Owner>) ownerRepository.findAll();
@@ -35,20 +41,18 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
 
   @Override
   public Owner findById(long Id) {
-    // TODO Auto-generated method stub
-    return null;
+    return ownerRepository.findById(Id).orElseThrow(() -> new OwnerNotFoundException(Long.toString(Id)));
   }
 
   @Override
   public Owner findByEmail(String email) {
-    // TODO Auto-generated method stub
-    return null;
+    return ownerRepository.findByEmail(email).orElseThrow(() -> new OwnerNotFoundException(email));
   }
 
   @Override
   public Owner create(Owner owner) {
-    // TODO Auto-generated method stub
-    return null;
+    owner.setPassword(bCryptPasswordEncoder.encode(owner.getPassword()));
+    return ownerRepository.save(owner);
   }
 
   @Override
@@ -74,6 +78,12 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
         .orElseGet(() -> {
           throw new UsernameNotFoundException("User not found with email: " + username);
         });
+  }
+
+  private static void checkOwner(Owner owner) {
+    if (owner.getEmail().isBlank() || owner.getPassword().isBlank() || owner.getName().isBlank()) {
+      throw new OwnerMissingFieldsException();
+    }
   }
 
 }

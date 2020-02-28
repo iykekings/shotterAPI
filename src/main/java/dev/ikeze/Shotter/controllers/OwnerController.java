@@ -40,4 +40,9 @@ public class OwnerController {
     return ResponseEntity.ok(new AuthenticationResponse(token));
   }
 
+  @PostMapping(value = "create")
+  public Owner create(@RequestBody Owner owner) {
+    return ownerService.create(owner);
+  }
+
 }
