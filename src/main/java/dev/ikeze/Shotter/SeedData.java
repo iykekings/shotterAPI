@@ -2,6 +2,8 @@ package dev.ikeze.Shotter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,21 +15,21 @@ import dev.ikeze.Shotter.repos.UrlRepository;
 @Transactional
 @Component
 public class SeedData implements CommandLineRunner {
-  private OwnerRepository ownerRepository;
-  private UrlRepository urlRepository;
+  @Autowired
+  private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
-  public SeedData(OwnerRepository ownerRepository, UrlRepository urlRepository) {
-    this.urlRepository = urlRepository;
-    this.ownerRepository = ownerRepository;
-  }
+  private OwnerRepository ownerRepository;
+
+  @Autowired
+  private UrlRepository urlRepository;
 
   @Override
   public void run(String... args) throws Exception {
 
-    Owner o1 = new Owner("test", "test@email.com", "password");
-    Owner o2 = new Owner("test1", "test1@email.com", "password1");
-    Owner o3 = new Owner("test2", "test2@email.com", "password2");
+    Owner o1 = new Owner("test", "test@email.com", bCryptPasswordEncoder.encode("password"));
+    Owner o2 = new Owner("test1", "test1@email.com", bCryptPasswordEncoder.encode("password1"));
+    Owner o3 = new Owner("test2", "test2@email.com", bCryptPasswordEncoder.encode("password2"));
 
     Url u0 = new Url("testing0", "https://testing0", o1);
     Url u1 = new Url("testing1", "https://testing1", o1);
