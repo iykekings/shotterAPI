@@ -3,9 +3,11 @@ package dev.ikeze.Shotter.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.ikeze.Shotter.model.Exists;
 import dev.ikeze.Shotter.model.Url;
 import dev.ikeze.Shotter.services.UrlService;
 
@@ -63,6 +65,16 @@ public class UrlController {
   @PutMapping(value = "{Id}")
   public Url update(@PathVariable("Id") long Id, @RequestBody Url url) {
     return urlService.updateById(Id, url);
+  }
+
+  @GetMapping(value = "check/{directory}")
+  public ResponseEntity<?> checkIfOwerExists(@PathVariable String directory) {
+    try {
+      urlService.findByDirectory(directory);
+      return ResponseEntity.ok(new Exists(true));
+    } catch (Exception e) {
+      return ResponseEntity.ok(new Exists(false));
+    }
   }
 
 }

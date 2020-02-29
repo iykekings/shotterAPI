@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.ikeze.Shotter.model.AuthenticationRequest;
 import dev.ikeze.Shotter.model.AuthenticationResponse;
+import dev.ikeze.Shotter.model.Exists;
 import dev.ikeze.Shotter.model.Owner;
 import dev.ikeze.Shotter.services.OwnerServiceImp;
 import dev.ikeze.Shotter.util.JwtUtil;
@@ -32,6 +34,16 @@ public class OwnerController {
     return (List<Owner>) ownerService.findAll();
   }
 
+  @GetMapping(value = "check/{email}")
+  public ResponseEntity<?> checkIfOwerExists(@PathVariable String email) {
+    try {
+      ownerService.findByEmail(email);
+      return ResponseEntity.ok(new Exists(true));
+    } catch (Exception e) {
+      return ResponseEntity.ok(new Exists(false));
+    }
+  }
+
   @PostMapping(value = "login")
   public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
     ownerService.authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -44,5 +56,4 @@ public class OwnerController {
   public Owner create(@RequestBody Owner owner) {
     return ownerService.create(owner);
   }
-
 }

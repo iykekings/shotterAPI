@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -20,14 +18,11 @@ public class Owner {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long ownerid;
 
-  @NotBlank
   @Column(unique = true)
   private String email;
 
-  @NotBlank
   private String name;
 
-  @NotBlank
   private String password;
 
   @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
