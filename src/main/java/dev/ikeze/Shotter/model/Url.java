@@ -18,6 +18,7 @@ public class Url {
 
   private String directory;
   private String redirect;
+  private int clicks;
 
   @ManyToOne(optional = true)
   @JoinColumn(name = "ownerid", updatable = false)
@@ -49,8 +50,16 @@ public class Url {
     return redirect;
   }
 
-  public long getid() {
+  public long getId() {
     return Id;
+  }
+
+  public int getClicks() {
+    return clicks;
+  }
+
+  public void setClicks(int clicks) {
+    this.clicks = clicks;
   }
 
   public void setId(long Id) {
@@ -67,7 +76,7 @@ public class Url {
 
   @Override
   public String toString() {
-    return "Id: " + Id + ", directory: " + directory;
+    return "Id: " + Id + ", directory: " + directory + ", redirect: " + redirect + ", clicks: " + clicks;
   }
 
 }
