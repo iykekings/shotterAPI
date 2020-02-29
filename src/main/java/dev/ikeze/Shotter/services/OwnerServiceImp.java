@@ -54,10 +54,13 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
   public Owner create(Owner owner) {
     checkOwner(owner);
     var ownerInDB = ownerRepository.findByEmail(owner.getEmail());
-    if (ownerInDB.isPresent())
-      throw new OwnerDuplicateException(owner.getEmail());
-    owner.setPassword(bCryptPasswordEncoder.encode(owner.getPassword()));
-    return ownerRepository.save(owner);
+    if (ownerInDB.isEmpty()) {
+      owner.setPassword(bCryptPasswordEncoder.encode(owner.getPassword()));
+      var newOwner = ownerRepository.save(owner);
+      newOwner.setPassword(null);
+      return newOwner;
+    }
+    throw new OwnerDuplicateException(owner.getEmail());
   }
 
   @Override
@@ -73,8 +76,11 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
 
   @Override
   public void delete(long Id) {
-    // TODO Auto-generated method stub
-
+    try {
+      ownerRepository.deleteById(Id);
+    } catch (Exception e) {
+      throw new OwnerNotFoundException(Long.toString(Id));
+    }
   }
 
   @Override
@@ -89,9 +95,18 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
     var e = owner.getEmail();
     var p = owner.getPassword();
     var n = owner.getName();
-    if (e == null || e.isBlank() || p == null || p.isBlank() || n == null || n.isBlank()) {
-      throw new OwnerMissingFieldsException();
+    var error = "";
+    if (e == null || e.isBlank()) {
+      error = "email";
     }
+    if (p == null || p.isBlank()) {
+      error = error.length() > 0 ? error += ", password" : "password";
+    }
+    if (n == null || n.isBlank()) {
+      error = error.length() > 0 ? error += "and name" : "name";
+    }
+    if (error.length() > 0)
+      throw new OwnerMissingFieldsException(error);
   }
 
 }
