@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dev.ikeze.Shotter.error.OwnerDuplicateException;
 import dev.ikeze.Shotter.error.OwnerMissingFieldsException;
 import dev.ikeze.Shotter.error.OwnerNotFoundException;
 import dev.ikeze.Shotter.model.Owner;
@@ -51,6 +52,10 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
 
   @Override
   public Owner create(Owner owner) {
+    checkOwner(owner);
+    var ownerInDB = ownerRepository.findByEmail(owner.getEmail());
+    if (ownerInDB.isPresent())
+      throw new OwnerDuplicateException(owner.getEmail());
     owner.setPassword(bCryptPasswordEncoder.encode(owner.getPassword()));
     return ownerRepository.save(owner);
   }
@@ -81,7 +86,10 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
   }
 
   private static void checkOwner(Owner owner) {
-    if (owner.getEmail().isBlank() || owner.getPassword().isBlank() || owner.getName().isBlank()) {
+    var e = owner.getEmail();
+    var p = owner.getPassword();
+    var n = owner.getName();
+    if (e == null || e.isBlank() || p == null || p.isBlank() || n == null || n.isBlank()) {
       throw new OwnerMissingFieldsException();
     }
   }
