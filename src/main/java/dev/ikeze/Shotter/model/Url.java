@@ -19,6 +19,9 @@ public class Url {
   private String directory;
   private String redirect;
   private int clicks;
+  private String description;
+  private String image;
+  private String title;
 
   @ManyToOne(optional = true)
   @JoinColumn(name = "ownerid", updatable = false)
@@ -60,6 +63,30 @@ public class Url {
 
   public void setClicks(int clicks) {
     this.clicks = clicks;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
   }
 
   public void setId(long Id) {
