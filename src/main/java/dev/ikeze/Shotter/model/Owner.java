@@ -81,6 +81,6 @@ public class Owner {
 
   @Override
   public String toString() {
-    return String.format("Id: %d, name: %s, email: %s, password: %s", ownerid, name, email, password);
+    return String.format("Id: %s, name: %s, email: %s, password: %s", ownerid, name, email, password);
   }
 }
