@@ -1,6 +1,7 @@
 package dev.ikeze.Shotter.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class OwnerController {
   }
 
   @GetMapping(value = "{Id}")
-  public Owner getOwnerById(@PathVariable long Id) {
+  public Owner getOwnerById(@PathVariable UUID Id) {
     var owner = ownerService.findById(Id);
     // TODO: find better way to ignore password return
     owner.setPassword(null);

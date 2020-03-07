@@ -2,6 +2,7 @@ package dev.ikeze.Shotter.services;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -56,8 +57,8 @@ public class UrlService {
     throw new UrlDuplicateException(url.getDirectory());
   }
 
-  public Url findById(long Id) {
-    return urlRepository.findById(Id).orElseThrow(() -> new UrlNotFoundException(Long.toString(Id)));
+  public Url findById(UUID uuid) {
+    return urlRepository.findById(uuid).orElseThrow(() -> new UrlNotFoundException(uuid.toString()));
   }
 
   public Url findByDirectory(String directory) {
@@ -68,21 +69,21 @@ public class UrlService {
     return (List<Url>) urlRepository.findAll();
   }
 
-  public List<Url> findByOwnerid(long ownerid) {
+  public List<Url> findByOwnerid(UUID ownerid) {
     return urlRepository.findByOwnerOwnerid(ownerid);
   }
 
-  public void deleteById(long Id) {
+  public void deleteById(UUID Id) {
     try {
       urlRepository.deleteById(Id);
     } catch (Exception e) {
-      throw new UrlNotFoundException(Long.toString(Id));
+      throw new UrlNotFoundException(Id.toString());
     }
   }
 
-  public Url updateById(long Id, Url url) {
+  public Url updateById(UUID uuid, Url url) {
     checkUrl(url);
-    Url urlInDB = findById(Id);
+    Url urlInDB = findById(uuid);
     urlInDB.setDirectory(url.getDirectory());
     urlInDB.setRedirect(url.getRedirect());
     urlInDB.getOwner().setOwnerid(url.getOwner().getOwnerid());

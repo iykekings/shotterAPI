@@ -2,6 +2,7 @@ package dev.ikeze.Shotter.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,8 +42,8 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
   }
 
   @Override
-  public Owner findById(long Id) {
-    return ownerRepository.findById(Id).orElseThrow(() -> new OwnerNotFoundException(Long.toString(Id)));
+  public Owner findById(UUID Id) {
+    return ownerRepository.findById(Id).orElseThrow(() -> new OwnerNotFoundException(Id.toString()));
   }
 
   @Override
@@ -75,11 +76,11 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
   }
 
   @Override
-  public void delete(long Id) {
+  public void delete(UUID Id) {
     try {
       ownerRepository.deleteById(Id);
     } catch (Exception e) {
-      throw new OwnerNotFoundException(Long.toString(Id));
+      throw new OwnerNotFoundException(Id.toString());
     }
   }
 
