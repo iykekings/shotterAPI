@@ -1,13 +1,14 @@
 package dev.ikeze.Shotter.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import dev.ikeze.Shotter.model.Owner;
 
 public interface OwnerService {
   List<Owner> findAll();
 
-  Owner findById(long Id);
+  Owner findById(UUID Id);
 
   Owner findByEmail(String email);
 
@@ -15,5 +16,5 @@ public interface OwnerService {
 
   void authenticate(String username, String password) throws Exception;
 
-  void delete(long Id);
+  void delete(UUID Id);
 }

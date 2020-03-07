@@ -2,6 +2,7 @@ package dev.ikeze.Shotter.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Owner {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long ownerid;
+  private UUID ownerid;
 
   @Column(unique = true)
   private String email;
@@ -46,11 +47,11 @@ public class Owner {
     this.urls = urls;
   }
 
-  public void setOwnerid(long ownerid) {
+  public void setOwnerid(UUID ownerid) {
     this.ownerid = ownerid;
   }
 
-  public long getOwnerid() {
+  public UUID getOwnerid() {
     return ownerid;
   }
 

@@ -1,6 +1,7 @@
 package dev.ikeze.Shotter.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +34,13 @@ public class UrlController {
 
   // "/5" ✅
   @GetMapping(value = "{Id}")
-  public Url getUrlById(@PathVariable("Id") long Id) {
+  public Url getUrlById(@PathVariable("Id") UUID Id) {
     return urlService.findById(Id);
   }
 
   // "/1/owner"
   @GetMapping(value = "{ownerid}/owner")
-  public List<Url> getAllUrlsByOwner(@PathVariable("ownerid") long ownerid) {
+  public List<Url> getAllUrlsByOwner(@PathVariable("ownerid") UUID ownerid) {
     return urlService.findByOwnerid(ownerid);
   }
 
@@ -57,13 +58,13 @@ public class UrlController {
 
   // DELETE: /Id
   @DeleteMapping(value = "{Id}")
-  public void delete(@PathVariable("Id") Long Id) {
+  public void delete(@PathVariable("Id") UUID Id) {
     urlService.deleteById(Id);
   }
 
   // PUT: /Id
   @PutMapping(value = "{Id}")
-  public Url update(@PathVariable("Id") long Id, @RequestBody Url url) {
+  public Url update(@PathVariable("Id") UUID Id, @RequestBody Url url) {
     return urlService.updateById(Id, url);
   }
 

@@ -1,5 +1,7 @@
 package dev.ikeze.Shotter.model;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +16,7 @@ public class Url {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long Id;
+  private UUID Id;
 
   private String directory;
   private String redirect;
@@ -53,7 +55,7 @@ public class Url {
     return redirect;
   }
 
-  public long getId() {
+  public UUID getId() {
     return Id;
   }
 
@@ -89,7 +91,7 @@ public class Url {
     this.image = image;
   }
 
-  public void setId(long Id) {
+  public void setId(UUID Id) {
     this.Id = Id;
   }
 
