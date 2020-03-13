@@ -30,11 +30,11 @@ public class SeedData implements CommandLineRunner {
     Owner o2 = new Owner("test1", "test1@email.com", bCryptPasswordEncoder.encode("password1"));
     Owner o3 = new Owner("test2", "test2@email.com", bCryptPasswordEncoder.encode("password2"));
 
-    Url u0 = new Url("testing0", "https://google.com", o1);
-    Url u1 = new Url("testing1", "https://github.com", o1);
-    Url u2 = new Url("testing2", "https://github.com/iykekings", o2);
-    Url u3 = new Url("testing3", "https://twitter.com", o2);
-    Url u4 = new Url("testing4", "https://news.google.com", o3);
+    Url u0 = new Url("projects", "https://ikeze.dev/projects", o1);
+    Url u1 = new Url("github", "https://github.com", o1);
+    Url u2 = new Url("iykekings", "https://github.com/iykekings", o2);
+    Url u3 = new Url("matthardsman", "https://github.com/mattshardman", o2);
+    Url u4 = new Url("lasjs", "https://www.npmjs.com/package/las-js", o3);
 
     ownerRepository.save(o1);
     ownerRepository.save(o2);
