@@ -72,6 +72,9 @@ public class UrlService {
   public List<Url> findByOwnerid(UUID ownerid) {
     return urlRepository.findByOwnerOwnerid(ownerid);
   }
+  public List<Url> findByOwnerEmail(String email) {
+    return urlRepository.findByOwnerEmail(email);
+  }
 
   public void deleteById(UUID Id) {
     try {
