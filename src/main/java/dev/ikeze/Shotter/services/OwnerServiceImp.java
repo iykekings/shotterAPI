@@ -1,7 +1,9 @@
 package dev.ikeze.Shotter.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import dev.ikeze.Shotter.error.OwnerMissingFieldsException;
 import dev.ikeze.Shotter.error.OwnerNotFoundException;
 import dev.ikeze.Shotter.model.Owner;
 import dev.ikeze.Shotter.repos.OwnerRepository;
+import dev.ikeze.Shotter.util.JwtUtil;
 
 @Transactional
 @Service(value = "ownerService")
@@ -29,6 +32,9 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
 
   @Autowired
   private OwnerRepository ownerRepository;
+
+  @Autowired
+  private JwtUtil jwtUtil;
 
   @Autowired
   private AuthenticationManager authenticationManager;
@@ -90,6 +96,14 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
         .orElseGet(() -> {
           throw new UsernameNotFoundException("User not found with email: " + username);
         });
+  }
+
+  public String VerifyUser(String username) {
+    var user =  ownerRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+    final UserDetails userDetails = new User(user.getEmail(), user.getPassword(), new ArrayList<>());
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("Id", user.getOwnerid());
+    return jwtUtil.generateToken(userDetails, claims);
   }
 
   private static void checkOwner(Owner owner) {

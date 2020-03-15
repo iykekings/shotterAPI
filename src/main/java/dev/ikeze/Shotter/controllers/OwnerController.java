@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,6 @@ import dev.ikeze.Shotter.model.AuthenticationResponse;
 import dev.ikeze.Shotter.model.Exists;
 import dev.ikeze.Shotter.model.Owner;
 import dev.ikeze.Shotter.services.OwnerServiceImp;
-import dev.ikeze.Shotter.util.JwtUtil;
 
 @RequestMapping(value = "owners")
 @RestController
@@ -26,9 +24,6 @@ public class OwnerController {
 
   @Autowired
   private OwnerServiceImp ownerService;
-
-  @Autowired
-  private JwtUtil jwtUtil;
 
   @GetMapping()
   public List<Owner> getAllOwners() {
@@ -56,8 +51,7 @@ public class OwnerController {
   @PostMapping(value = "login")
   public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
     ownerService.authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-    final UserDetails userDetails = ownerService.loadUserByUsername(authenticationRequest.getUsername());
-    final String token = jwtUtil.generateToken(userDetails);
+    final String token = ownerService.VerifyUser(authenticationRequest.getUsername());
     return ResponseEntity.ok(new AuthenticationResponse(token));
   }
 
