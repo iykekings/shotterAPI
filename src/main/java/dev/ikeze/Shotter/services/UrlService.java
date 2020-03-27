@@ -94,8 +94,8 @@ public class UrlService {
   }
 
   private static void checkUrl(Url url) {
-    var d = url.getDirectory();
-    var r = url.getRedirect();
+    String d = url.getDirectory();
+    String r = url.getRedirect();
     if (d == null || d.isBlank() || r == null || r.isBlank()) {
       throw new UrlMissingFieldsException();
     }

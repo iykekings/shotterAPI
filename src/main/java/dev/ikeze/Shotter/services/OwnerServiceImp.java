@@ -1,10 +1,6 @@
 package dev.ikeze.Shotter.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -60,7 +56,7 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
   @Override
   public Owner create(Owner owner) {
     checkOwner(owner);
-    var ownerInDB = ownerRepository.findByEmail(owner.getEmail());
+    Optional<Owner> ownerInDB = ownerRepository.findByEmail(owner.getEmail());
     if (ownerInDB.isEmpty()) {
       owner.setPassword(bCryptPasswordEncoder.encode(owner.getPassword()));
       return ownerRepository.save(owner);
@@ -105,10 +101,10 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
   }
 
   private static void checkOwner(Owner owner) {
-    var e = owner.getEmail();
-    var p = owner.getPassword();
-    var n = owner.getName();
-    var error = "";
+    String e = owner.getEmail();
+    String p = owner.getPassword();
+    String n = owner.getName();
+    String error = "";
     if (e == null || e.isBlank()) {
       error = "email";
     }

@@ -28,10 +28,9 @@ public class OwnerController {
 
   @GetMapping(value = "{Id}")
   public Owner getOwnerById(@PathVariable UUID Id) {
-    var owner = ownerService.findById(Id);
     // TODO: find better way to ignore password return
-    owner.setPassword(null);
-    return owner;
+//    owner.setPassword(null);
+    return ownerService.findById(Id);
   }
 
   @GetMapping(value = "check/{email}")
