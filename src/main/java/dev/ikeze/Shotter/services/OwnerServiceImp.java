@@ -63,9 +63,7 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
     var ownerInDB = ownerRepository.findByEmail(owner.getEmail());
     if (ownerInDB.isEmpty()) {
       owner.setPassword(bCryptPasswordEncoder.encode(owner.getPassword()));
-      var newOwner = ownerRepository.save(owner);
-      newOwner.setPassword(null);
-      return newOwner;
+      return ownerRepository.save(owner);
     }
     throw new OwnerDuplicateException(owner.getEmail());
   }
@@ -98,7 +96,7 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
         });
   }
 
-  public String VerifyUser(String username) {
+  public String VerifyUser(String username) throws UsernameNotFoundException {
     var user =  ownerRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
     final UserDetails userDetails = new User(user.getEmail(), user.getPassword(), new ArrayList<>());
     Map<String, Object> claims = new HashMap<>();
@@ -115,10 +113,10 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
       error = "email";
     }
     if (p == null || p.isBlank()) {
-      error = error.length() > 0 ? error += ", password" : "password";
+      error = error.length() > 0 ? error + ", password" : "password";
     }
     if (n == null || n.isBlank()) {
-      error = error.length() > 0 ? error += "and name" : "name";
+      error = error.length() > 0 ? error + "and name" : "name";
     }
     if (error.length() > 0)
       throw new OwnerMissingFieldsException(error);

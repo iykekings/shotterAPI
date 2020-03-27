@@ -1,33 +1,29 @@
 package dev.ikeze.Shotter.controllers;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import dev.ikeze.Shotter.model.AuthenticationRequest;
 import dev.ikeze.Shotter.model.AuthenticationResponse;
 import dev.ikeze.Shotter.model.Exists;
 import dev.ikeze.Shotter.model.Owner;
 import dev.ikeze.Shotter.services.OwnerServiceImp;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
 
 @RequestMapping(value = "owners")
 @RestController
 public class OwnerController {
 
-  @Autowired
-  private OwnerServiceImp ownerService;
+  private final OwnerServiceImp ownerService;
+  public OwnerController(OwnerServiceImp ownerService) {
+    this.ownerService = ownerService;
+  }
 
   @GetMapping()
   public List<Owner> getAllOwners() {
-    return (List<Owner>) ownerService.findAll();
+    return ownerService.findAll();
   }
 
   @GetMapping(value = "{Id}")
@@ -39,7 +35,7 @@ public class OwnerController {
   }
 
   @GetMapping(value = "check/{email}")
-  public ResponseEntity<?> checkIfOwerExists(@PathVariable String email) {
+  public ResponseEntity<?> checkIfOwnerExists(@PathVariable String email) {
     try {
       ownerService.findByEmail(email);
       return ResponseEntity.ok(new Exists(true));
@@ -56,9 +52,10 @@ public class OwnerController {
   }
 
   @PostMapping(value = "create")
-  public Owner create(@RequestBody Owner owner) {
-    return ownerService.create(owner);
+  public ResponseEntity<?> create(@RequestBody Owner owner) {
+    return ResponseEntity.created(URI.create("/owners/create")).body(ownerService.create(owner));
   }
+
   // TODO: Second release cycle
   // @DeleteMapping(value = "{id}")
   // public void deleteOwner(@PathVariable long Id) {

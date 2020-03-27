@@ -1,30 +1,30 @@
 package dev.ikeze.Shotter;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.ikeze.Shotter.model.Owner;
+import dev.ikeze.Shotter.model.Url;
+import dev.ikeze.Shotter.repos.OwnerRepository;
+import dev.ikeze.Shotter.repos.UrlRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import dev.ikeze.Shotter.model.Owner;
-import dev.ikeze.Shotter.model.Url;
-import dev.ikeze.Shotter.repos.OwnerRepository;
-import dev.ikeze.Shotter.repos.UrlRepository;
-
 @Transactional
 @Component
 public class SeedData implements CommandLineRunner {
-  @Autowired
-  private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  @Autowired
-  private OwnerRepository ownerRepository;
+  private final OwnerRepository ownerRepository;
 
-  @Autowired
-  private UrlRepository urlRepository;
+  private final UrlRepository urlRepository;
+
+  public SeedData(OwnerRepository ownerRepository, UrlRepository urlRepository) {
+    this.ownerRepository = ownerRepository;
+    this.urlRepository = urlRepository;
+  }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     Owner o1 = new Owner("test", "test@email.com", bCryptPasswordEncoder.encode("password"));
     Owner o2 = new Owner("test1", "test1@email.com", bCryptPasswordEncoder.encode("password1"));
