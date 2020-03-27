@@ -1,6 +1,7 @@
 package dev.ikeze.Shotter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.ikeze.Shotter.model.AuthenticationRequest;
 import dev.ikeze.Shotter.model.Owner;
 import dev.ikeze.Shotter.repos.OwnerRepository;
 import dev.ikeze.Shotter.util.JwtUtil;
@@ -53,7 +54,7 @@ class OwnerIntegrationTest {
 	}
 
 	@Test
-	void errorsOnDuplicateOwner() throws Exception {
+	void SignUpFailsOnDuplicateOwner() throws Exception {
 		var owner = new Owner("mattie", "mattie@email.com", bCryptPasswordEncoder.encode("password"));
 		ownerRepository.save(owner);
 		var exception = Objects.requireNonNull(mvc.perform(MockMvcRequestBuilders
@@ -67,7 +68,7 @@ class OwnerIntegrationTest {
 	}
 
 	@Test
-	void failsOnMissingRequiredOwnerParams() throws Exception {
+	void SignUpFailsOnMissingRequiredOwnerParams() throws Exception {
 		var owner = new Owner("mattie", "", bCryptPasswordEncoder.encode("password"));
 		ownerRepository.save(owner);
 		var exception = Objects.requireNonNull(mvc.perform(MockMvcRequestBuilders
@@ -137,6 +138,31 @@ class OwnerIntegrationTest {
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.state").value(false));
+	}
+
+	@Test
+	void loginSuccessfully() throws Exception {
+		var owner = new Owner("user1", "user1@himself.com", bCryptPasswordEncoder.encode("password"));
+		var ownerInDb = ownerRepository.save(owner);
+		mvc.perform(MockMvcRequestBuilders
+				.post("/owners/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(asJsonString(new AuthenticationRequest(ownerInDb.getEmail(), "password"))))
+				.andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.token").exists());
+	}
+
+	@Test
+	void loginFailsOnWrongCredentials() throws Exception {
+		var exception = Objects.requireNonNull(mvc.perform(MockMvcRequestBuilders
+				.post("/owners/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(asJsonString(new AuthenticationRequest("user1@himself.com", "wrongPassword"))))
+				.andExpect(status().isBadRequest())
+				.andReturn().getResolvedException()).getMessage();
+		assertEquals(exception, "Wrong password or email. Make sure you have signed up");
 	}
 
 	public static String asJsonString(final Object obj) {

@@ -6,11 +6,9 @@ import dev.ikeze.Shotter.repos.OwnerRepository;
 import dev.ikeze.Shotter.repos.UrlRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@Component
+//@Transactional
+//@Component
 public class SeedData implements CommandLineRunner {
 
   private final OwnerRepository ownerRepository;
@@ -46,8 +44,8 @@ public class SeedData implements CommandLineRunner {
     urlRepository.save(u3);
     urlRepository.save(u4);
 
-    urlRepository.findAll().forEach(System.out::println);
-    ownerRepository.findAll().forEach(System.out::println);
+//    urlRepository.findAll().forEach(System.out::println);
+//    ownerRepository.findAll().forEach(System.out::println);
   }
 
 }

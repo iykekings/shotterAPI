@@ -1,7 +1,12 @@
 package dev.ikeze.Shotter.services;
 
-import java.util.*;
-
+import dev.ikeze.Shotter.error.LoginException;
+import dev.ikeze.Shotter.error.OwnerDuplicateException;
+import dev.ikeze.Shotter.error.OwnerMissingFieldsException;
+import dev.ikeze.Shotter.error.OwnerNotFoundException;
+import dev.ikeze.Shotter.model.Owner;
+import dev.ikeze.Shotter.repos.OwnerRepository;
+import dev.ikeze.Shotter.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,12 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dev.ikeze.Shotter.error.OwnerDuplicateException;
-import dev.ikeze.Shotter.error.OwnerMissingFieldsException;
-import dev.ikeze.Shotter.error.OwnerNotFoundException;
-import dev.ikeze.Shotter.model.Owner;
-import dev.ikeze.Shotter.repos.OwnerRepository;
-import dev.ikeze.Shotter.util.JwtUtil;
+import java.util.*;
 
 @Transactional
 @Service(value = "ownerService")
@@ -71,7 +71,7 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
     } catch (DisabledException e) {
       throw new Exception("USER_DISABLED", e);
     } catch (BadCredentialsException e) {
-      throw new Exception("INVALID_CREDENTIALS", e);
+      throw new LoginException();
     }
   }
 
@@ -92,7 +92,7 @@ public class OwnerServiceImp implements OwnerService, UserDetailsService {
         });
   }
 
-  public String VerifyUser(String username) throws UsernameNotFoundException {
+  public String VerifyUser(String username) {
     var user =  ownerRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
     final UserDetails userDetails = new User(user.getEmail(), user.getPassword(), new ArrayList<>());
     Map<String, Object> claims = new HashMap<>();
