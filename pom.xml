@@ -12,9 +12,6 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Shotter</name>
   <description>A URL shortener API</description>
-  <properties>
-    <java.version>11</java.version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>org.postgresql</groupId>
