@@ -8,7 +8,8 @@ public class OwnerMissingFieldsException extends RuntimeException {
 
   private static final long serialVersionUID = -1228987392559761544L;
 
-  public OwnerMissingFieldsException() {
-    super("Please provide email, name and password fields");
+
+  public OwnerMissingFieldsException(String error) {
+    super(String.format("Please provide %s field(s)", error));
   }
 }

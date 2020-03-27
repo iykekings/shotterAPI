@@ -2,24 +2,28 @@ package dev.ikeze.Shotter.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Owner {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long ownerid;
+  private UUID ownerid;
 
+  @Column(unique = true)
   private String email;
+
   private String name;
+
   private String password;
 
   @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
@@ -43,11 +47,11 @@ public class Owner {
     this.urls = urls;
   }
 
-  public void setOwnerid(long ownerid) {
+  public void setOwnerid(UUID ownerid) {
     this.ownerid = ownerid;
   }
 
-  public long getOwnerid() {
+  public UUID getOwnerid() {
     return ownerid;
   }
 
@@ -77,6 +81,6 @@ public class Owner {
 
   @Override
   public String toString() {
-    return String.format("Id: %d, name: %s, email: %s, password: %s", ownerid, name, email, password);
+    return String.format("Id: %s, name: %s, email: %s, password: %s", ownerid, name, email, password);
   }
 }
