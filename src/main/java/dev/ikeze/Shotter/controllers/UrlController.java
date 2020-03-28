@@ -1,5 +1,6 @@
 package dev.ikeze.Shotter.controllers;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,13 +48,13 @@ public class UrlController {
   // dir/directory
   @GetMapping(value = "dir/{directory}")
   public Url getUrlByDirectory(@PathVariable("directory") String directory) {
-    return urlService.findByDirectory(directory);
+      return urlService.findByDirectory(directory);
   }
 
   // POST: /urls
   @PostMapping
-  public Url addUrl(@RequestBody Url url) {
-    return urlService.addUrl(url);
+  public ResponseEntity<Url> addUrl(@RequestBody Url url) {
+    return ResponseEntity.created(URI.create("/urls")).body(urlService.addUrl(url));
   }
 
   // DELETE: /Id
@@ -69,13 +70,10 @@ public class UrlController {
   }
 
   @GetMapping(value = "check/{directory}")
-  public ResponseEntity<?> checkIfOwerExists(@PathVariable String directory) {
-    try {
-      urlService.findByDirectory(directory);
-      return ResponseEntity.ok(new Exists(true));
-    } catch (Exception e) {
-      return ResponseEntity.ok(new Exists(false));
-    }
+  public Exists checkIfUrlExists(@PathVariable String directory) {
+    return urlService.findByDirectorySp(directory)
+            .map( x -> new Exists(true))
+            .orElseGet( () -> new Exists(false));
   }
 
 }

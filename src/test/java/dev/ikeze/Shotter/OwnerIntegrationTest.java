@@ -1,25 +1,24 @@
 package dev.ikeze.Shotter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ikeze.Shotter.model.AuthenticationRequest;
 import dev.ikeze.Shotter.model.Owner;
 import dev.ikeze.Shotter.repos.OwnerRepository;
-import dev.ikeze.Shotter.util.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
 
+import static dev.ikeze.Shotter.TestHelper.asJsonString;
+import static dev.ikeze.Shotter.TestHelper.generateToken;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -164,21 +163,4 @@ class OwnerIntegrationTest {
 				.andReturn().getResolvedException()).getMessage();
 		assertEquals(exception, "Wrong password or email. Make sure you have signed up");
 	}
-
-	public static String asJsonString(final Object obj) {
-		try {
-			return new ObjectMapper().writeValueAsString(obj);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public  static String generateToken(Owner owner) {
-		JwtUtil jwtUtil = new JwtUtil();
-		final UserDetails userDetails = new User(owner.getEmail(), owner.getPassword(), new ArrayList<>());
-		Map<String, Object> claims = new HashMap<>();
-		claims.put("Id", owner.getOwnerid());
-		return jwtUtil.generateToken(userDetails, claims);
-	}
-
 }

@@ -36,7 +36,7 @@ public class Url {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @ManyToOne(optional = true)
+  @ManyToOne()
   @JoinColumn(name = "ownerid", updatable = false)
   @JsonIgnoreProperties({ "urls", "password" })
   private Owner owner;
@@ -46,6 +46,12 @@ public class Url {
     this.redirect = redirect;
     this.owner = owner;
   }
+  public Url(String directory, String redirect) {
+    this.directory = directory;
+    this.redirect = redirect;
+  }
+
+
 
   public Url() {
   }

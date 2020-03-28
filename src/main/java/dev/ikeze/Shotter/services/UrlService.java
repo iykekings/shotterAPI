@@ -2,6 +2,7 @@ package dev.ikeze.Shotter.services;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.jsoup.Jsoup;
@@ -65,6 +66,11 @@ public class UrlService {
     return urlRepository.findByDirectory(directory).orElseThrow(() -> new UrlNotFoundException(directory));
   }
 
+  public Optional<Url> findByDirectorySp(String directory) {
+    return urlRepository.findByDirectory(directory);
+  }
+
+
   public List<Url> findAll() {
     return (List<Url>) urlRepository.findAll();
   }
@@ -72,9 +78,9 @@ public class UrlService {
   public List<Url> findByOwnerid(UUID ownerid) {
     return urlRepository.findByOwnerOwnerid(ownerid);
   }
-  public List<Url> findByOwnerEmail(String email) {
-    return urlRepository.findByOwnerEmail(email);
-  }
+//  public List<Url> findByOwnerEmail(String email) {
+//    return urlRepository.findByOwnerEmail(email);
+//  }
 
   public void deleteById(UUID Id) {
     try {
