@@ -178,9 +178,9 @@ public class UrlIntegrationTest {
     @Test
     void createUrlFailsIfUrlIsDuplicate() throws Exception {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        var testOwner = ownerRepository.save(new Owner("urlTester", "urltestCreate1@test.com", bCryptPasswordEncoder.encode("password")));
-        var url = new Url("testCreate1", "https://ikeze.dev/blog", testOwner);
-        urlRepository.save(url);
+        var testOwner = ownerRepository.save(new Owner("urlTester11", "urltestCreate11@test.com", bCryptPasswordEncoder.encode("password")));
+        var url = new Url("testCreate11", "https://ikeze.dev/projects", testOwner);
+        urlRepository.save(new Url("testCreate11", "https://ikeze.dev/projects", testOwner));
         var exception = Objects.requireNonNull(mvc.perform(MockMvcRequestBuilders
                 .post("/urls")
                 .header("Authorization", "Bearer " + generateToken(testOwner))
@@ -190,7 +190,39 @@ public class UrlIntegrationTest {
                 .andExpect(status().isConflict())
                 .andReturn().getResolvedException()).getMessage();
         assertEquals(exception, "Url is a duplicate: " + url.getDirectory());
+    }
 
+    @Test
+    void createUrlFailsIfFieldsAreBlank() throws Exception {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        var testOwner = ownerRepository.save(new Owner("urlTester", "urltestCreate1@test.com", bCryptPasswordEncoder.encode("password")));
+        var url = new Url("", "", testOwner);
+        var exception = Objects.requireNonNull(mvc.perform(MockMvcRequestBuilders
+                .post("/urls")
+                .header("Authorization", "Bearer " + generateToken(testOwner))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(url)))
+                .andExpect(status().isBadRequest())
+                .andReturn().getResolvedException()).getMessage();
+        assertEquals(exception, "Please provide directory, redirect and/or owner fields");
+    }
+
+    @Test
+    void updateUrlSuccessfully() throws Exception {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        var testOwner = ownerRepository.save(new Owner("urlTester", "urltestUpdate@test.com", bCryptPasswordEncoder.encode("password")));
+        var url = new Url("update", "https://ikeze.dev/projects", testOwner);
+        urlRepository.save(url);
+        mvc.perform(MockMvcRequestBuilders
+                .put("/urls/" + url.getId())
+                .header("Authorization", "Bearer "+ generateToken(testOwner))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(new Url("updatedUrl", "https://ikeze.dev/contact", testOwner))))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.directory").value("updatedUrl"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.redirect").value("https://ikeze.dev/contact"));
     }
 
 

@@ -29,6 +29,10 @@ public class UrlService {
   // returns Url if successful and null when the Url already exists
   public Url addUrl(Url url) {
     checkUrl(url);
+    var urlInDB = urlRepository.findByDirectory(url.getDirectory());
+    if (urlInDB.isPresent()) {
+    throw new UrlDuplicateException(url.getDirectory());
+    }
     try {
       Document doc = Jsoup.connect(url.getRedirect()).get();
       Element tit1 = doc.select("meta[property=og:title]").first();
@@ -47,15 +51,10 @@ public class UrlService {
       String image = !(img1 == null) ? img1.attr("content") : !(img2 == null) ? img2.attr("content") : "";
       System.out.println("\nTitle: " + title + " Description: " + description + " Image: " + image + "\n");
       url.setImage(image);
-
-    } catch (IOException e) {
-      throw new UrlInvalidException(url.getRedirect());
-    }
-    var urlInDB = urlRepository.findByDirectory(url.getDirectory());
-    if (urlInDB.isEmpty()) {
+      return urlRepository.save(url);
+    } catch (Exception e) {
       return urlRepository.save(url);
     }
-    throw new UrlDuplicateException(url.getDirectory());
   }
 
   public Url findById(UUID uuid) {
