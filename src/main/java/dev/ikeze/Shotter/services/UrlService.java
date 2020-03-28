@@ -1,10 +1,10 @@
 package dev.ikeze.Shotter.services;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import dev.ikeze.Shotter.error.UrlDuplicateException;
+import dev.ikeze.Shotter.error.UrlMissingFieldsException;
+import dev.ikeze.Shotter.error.UrlNotFoundException;
+import dev.ikeze.Shotter.model.Url;
+import dev.ikeze.Shotter.repos.UrlRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,12 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dev.ikeze.Shotter.error.UrlDuplicateException;
-import dev.ikeze.Shotter.error.UrlInvalidException;
-import dev.ikeze.Shotter.error.UrlMissingFieldsException;
-import dev.ikeze.Shotter.error.UrlNotFoundException;
-import dev.ikeze.Shotter.model.Url;
-import dev.ikeze.Shotter.repos.UrlRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Transactional
 @Service(value = "urlService")
@@ -49,7 +46,6 @@ public class UrlService {
       Element img1 = doc.select("meta[property=og:image]").first();
       Element img2 = doc.select("meta[name=twitter:image]").first();
       String image = !(img1 == null) ? img1.attr("content") : !(img2 == null) ? img2.attr("content") : "";
-      System.out.println("\nTitle: " + title + " Description: " + description + " Image: " + image + "\n");
       url.setImage(image);
       return urlRepository.save(url);
     } catch (Exception e) {
