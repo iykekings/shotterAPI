@@ -87,11 +87,8 @@ public class UrlService {
 
   public Url updateById(UUID uuid, Url url) {
     checkUrl(url);
-    Url urlInDB = findById(uuid);
-    urlInDB.setDirectory(url.getDirectory());
-    urlInDB.setRedirect(url.getRedirect());
-    urlInDB.getOwner().setOwnerid(url.getOwner().getOwnerid());
-    return urlRepository.save(urlInDB);
+    findById(uuid);
+    return urlRepository.save(url);
   }
 
   private static void checkUrl(Url url) {

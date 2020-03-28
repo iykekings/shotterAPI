@@ -66,6 +66,7 @@ public class UrlController {
   // PUT: /Id
   @PutMapping(value = "{Id}")
   public Url update(@PathVariable("Id") UUID Id, @RequestBody Url url) {
+    url.setId(Id);
     return urlService.updateById(Id, url);
   }
 
