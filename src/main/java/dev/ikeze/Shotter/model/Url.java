@@ -29,8 +29,12 @@ public class Url {
   private String redirect;
 
   private int clicks;
+
   private String description;
+
+  @Column(length = 1000)
   private String image;
+
   private String title;
 
   @Column(updatable = false)
