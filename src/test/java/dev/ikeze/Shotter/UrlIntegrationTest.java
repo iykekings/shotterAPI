@@ -189,7 +189,7 @@ public class UrlIntegrationTest {
                 .content(asJsonString(url)))
                 .andExpect(status().isConflict())
                 .andReturn().getResolvedException()).getMessage();
-        assertEquals(exception, "Url is a duplicate: " + url.getDirectory());
+        assertEquals(exception, "This Url already exists: " + url.getDirectory());
     }
 
     @Test

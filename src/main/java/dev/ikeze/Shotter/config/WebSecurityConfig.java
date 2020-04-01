@@ -21,12 +21,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.List;
+
 @EnableWebSecurity
 @EnableCaching
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+  @Qualifier("ownerService")
   @Autowired
   private UserDetailsService myUserDetailsService;
 
@@ -43,14 +46,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
-    JwtAuthenticationEntryPoint jwtAuth = new JwtAuthenticationEntryPoint();
-    return jwtAuth;
+    return new JwtAuthenticationEntryPoint();
   }
 
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    return bCryptPasswordEncoder;
+    return new BCryptPasswordEncoder();
   }
 
   @Override
@@ -61,7 +62,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+    httpSecurity.cors().configurationSource(request -> {
+      var cors = new CorsConfiguration();
+      cors.setAllowedOrigins(List.of("http://localhost:4200", "http://127.0.0.1:80", "https://shotter.netlify.com", "https://shotter.ikeze.dev"));
+      cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+      cors.setAllowedHeaders(List.of("*"));
+      return cors;
+    });
     httpSecurity.requiresChannel().requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null).requiresSecure();
     httpSecurity.csrf().disable().authorizeRequests()
         .antMatchers("/r/*", "/owners/login", "/owners/create", "/owners/check/*").permitAll().anyRequest()

@@ -9,6 +9,6 @@ public class UrlDuplicateException extends RuntimeException {
   private static final long serialVersionUID = -3670278356021712338L;
 
   public UrlDuplicateException(String directory) {
-    super("Url is a duplicate: " + directory);
+    super("This Url already exists: " + directory);
   }
 }

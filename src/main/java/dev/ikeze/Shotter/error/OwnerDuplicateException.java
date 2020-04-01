@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class OwnerDuplicateException extends RuntimeException {
   private static final long serialVersionUID = 1L;
 
-  public OwnerDuplicateException(String directory) {
-    super("Owner is a duplicate: " + directory);
+  public OwnerDuplicateException(String email) {
+    super(email + " already registered, try login in");
   }
 }

@@ -63,7 +63,7 @@ class OwnerIntegrationTest {
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isConflict())
 				.andReturn().getResolvedException()).getMessage();
-		assertEquals(exception, "Owner is a duplicate: " + owner.getEmail());
+		assertEquals(exception, owner.getEmail() + " already registered, try login in");
 	}
 
 	@Test
