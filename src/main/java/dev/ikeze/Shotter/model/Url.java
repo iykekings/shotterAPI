@@ -24,7 +24,10 @@ public class Url {
   private UUID Id;
 
   private String directory;
+
+  @Column(length = 2048)
   private String redirect;
+
   private int clicks;
   private String description;
   private String image;
