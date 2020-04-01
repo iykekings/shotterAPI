@@ -23,7 +23,6 @@ public class UrlService {
   @Autowired
   private UrlRepository urlRepository;
 
-  // returns Url if successful and null when the Url already exists
   public Url addUrl(Url url) {
     checkUrl(url);
     var urlInDB = urlRepository.findByDirectory(url.getDirectory());
@@ -36,12 +35,12 @@ public class UrlService {
       Element tit2 = doc.select("meta[name=twitter:title]").first();
       String tit3 = doc.title();
       String title = !(tit1 == null) ? tit1.attr("content") : !(tit2 == null) ? tit2.attr("content") : tit3;
-      url.setTitle(title.substring(0, 100));
+      url.setTitle(title);
 
       Element descr1 = doc.select("meta[property=og:description]").first();
       Element descr2 = doc.select("meta[name=twitter:description]").first();
       String description = !(descr1 == null) ? descr1.attr("content") : !(descr2 == null) ? descr2.attr("content") : "";
-      url.setDescription(description.substring(0, 100));
+      url.setDescription(description);
 
       Element img1 = doc.select("meta[property=og:image]").first();
       Element img2 = doc.select("meta[name=twitter:image]").first();
@@ -73,9 +72,6 @@ public class UrlService {
   public List<Url> findByOwnerid(UUID ownerid) {
     return urlRepository.findByOwnerOwnerid(ownerid);
   }
-//  public List<Url> findByOwnerEmail(String email) {
-//    return urlRepository.findByOwnerEmail(email);
-//  }
 
   public void deleteById(UUID Id) {
     try {

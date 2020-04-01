@@ -25,16 +25,18 @@ public class Url {
 
   private String directory;
 
-  @Column(length = 2048)
+  @Column(columnDefinition = "text")
   private String redirect;
 
   private int clicks;
 
+  @Column(columnDefinition = "text")
   private String description;
 
   @Column(length = 1000)
   private String image;
 
+  @Column(length = 1000)
   private String title;
 
   @Column(updatable = false)
